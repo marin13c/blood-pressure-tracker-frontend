@@ -16,7 +16,11 @@ export default function RecordList() {
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/records`
       );
       const data = await res.json();
-      setRecords(data);
+      // Ordenar desde el más nuevo al más viejo por defecto
+      const sortedData = data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setRecords(sortedData);
     };
     fetchRecords();
   }, []);
