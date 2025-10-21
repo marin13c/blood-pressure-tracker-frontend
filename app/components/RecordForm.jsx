@@ -52,7 +52,6 @@ export default function RecordForm({ onAdd }) {
             value={systolic}
             onChange={(e) => setSystolic(e.target.value)}
             required
-            placeholder="120"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -67,7 +66,6 @@ export default function RecordForm({ onAdd }) {
             value={diastolic}
             onChange={(e) => setDiastolic(e.target.value)}
             required
-            placeholder="80"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -81,7 +79,6 @@ export default function RecordForm({ onAdd }) {
             type="number"
             value={pulse}
             onChange={(e) => setPulse(e.target.value)}
-            placeholder="72"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
           />
         </div>
@@ -94,7 +91,6 @@ export default function RecordForm({ onAdd }) {
             type="text"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            placeholder="Ej: Después de ejercicio"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
           />
         </div>
