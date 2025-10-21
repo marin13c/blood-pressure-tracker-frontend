@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { HeartPulse, ActivitySquare, ClipboardPlus } from "lucide-react";
 
@@ -31,9 +32,8 @@ export default function RecordForm({ onAdd }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white shadow-lg rounded-xl p-4 sm:p-6 md:p-8 space-y-6 border border-gray-100 max-w-md mx-auto"
+      className="bg-white shadow-lg rounded-xl p-4 sm:p-6 md:p-8 space-y-6 border border-gray-100 w-full max-w-md mx-auto"
     >
-      {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <ClipboardPlus className="text-blue-600 w-5 h-5" />
         <h3 className="text-lg sm:text-xl font-semibold text-gray-800">
@@ -41,7 +41,6 @@ export default function RecordForm({ onAdd }) {
         </h3>
       </div>
 
-      {/* Campos */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-sm text-gray-600 font-medium flex items-center gap-1 mb-1">
@@ -101,7 +100,6 @@ export default function RecordForm({ onAdd }) {
         </div>
       </div>
 
-      {/* Botón */}
       <button
         type="submit"
         className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-3 rounded-lg transition shadow-md"
