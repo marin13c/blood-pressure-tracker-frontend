@@ -61,6 +61,12 @@ export default function ExportButtons({ records, startDate, endDate, user }) {
   const exportPDF = () => {
     const doc = new jsPDF();
 
+    // Pedir nombre del usuario
+    const nombreUsuario = prompt(
+      "Ingrese su nombre para el PDF:",
+      user?.name || ""
+    );
+
     const start = formatDate(new Date(startDate));
     const end = formatDate(new Date(endDate));
 
@@ -78,7 +84,7 @@ export default function ExportButtons({ records, startDate, endDate, user }) {
     doc.setFontSize(11);
     const fechaRango = `${start || "-"} - ${end || "-"}`;
     doc.text(`Rango de fechas: ${fechaRango}`, 14, 28);
-    doc.text(`Usuario: ${user?.name || "-"}`, 14, 36);
+    doc.text(`Usuario: ${nombreUsuario || "-"}`, 14, 36);
     doc.text(`Total registros: ${filtered.length}`, 14, 44);
 
     // Tabla
