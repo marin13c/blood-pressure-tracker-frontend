@@ -6,6 +6,13 @@ import ExcelJS from "exceljs";
 import { FileSpreadsheet, FileText } from "lucide-react";
 
 export default function ExportButtons({ records, startDate, endDate, user }) {
+  const formatDate = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    if (isNaN(d)) return null;
+    return d.toISOString().split("T")[0]; // YYYY-MM-DD
+  };
+
   const exportExcel = async () => {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("Presión Arterial");
@@ -18,9 +25,15 @@ export default function ExportButtons({ records, startDate, endDate, user }) {
       { header: "Notas", key: "notes", width: 25 },
     ];
 
+    const start = formatDate(startDate);
+    const end = formatDate(endDate);
+
     const filtered = records.filter((r) => {
-      const d = new Date(r.date);
-      return d >= startDate && d <= endDate;
+      const d = formatDate(r.date);
+      if (!d) return false;
+      if (start && d < start) return false;
+      if (end && d > end) return false;
+      return true;
     });
 
     filtered.forEach((r) => {
@@ -43,12 +56,6 @@ export default function ExportButtons({ records, startDate, endDate, user }) {
     a.download = "presion-arterial.xlsx";
     a.click();
     window.URL.revokeObjectURL(url);
-  };
-
-  const formatDate = (date) => {
-    if (!(date instanceof Date) || isNaN(date)) return null;
-    const d = new Date(date);
-    return d.toISOString().split("T")[0]; // YYYY-MM-DD
   };
 
   const exportPDF = () => {
