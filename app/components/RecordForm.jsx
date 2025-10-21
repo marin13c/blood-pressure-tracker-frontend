@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { HeartPulse, ActivitySquare, ClipboardPlus } from "lucide-react";
 
 export default function RecordForm({ onAdd }) {
@@ -8,6 +8,15 @@ export default function RecordForm({ onAdd }) {
   const [diastolic, setDiastolic] = useState("");
   const [pulse, setPulse] = useState("");
   const [notes, setNotes] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+
+  // Set default date/time to current
+  useEffect(() => {
+    const now = new Date();
+    setDate(now.toISOString().split("T")[0]);
+    setTime(now.toTimeString().slice(0, 5));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +28,7 @@ export default function RecordForm({ onAdd }) {
         diastolic: Number(diastolic),
         pulse: pulse ? Number(pulse) : undefined,
         notes,
+        date: new Date(`${date}T${time}:00`),
       }),
     });
 
@@ -42,8 +52,35 @@ export default function RecordForm({ onAdd }) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Fecha */}
         <div>
-          <label className="text-sm text-gray-600 font-medium flex items-center gap-1 mb-1">
+          <label className="text-sm text-gray-600 font-medium mb-1">
+            Fecha
+          </label>
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
+          />
+        </div>
+
+        {/* Hora */}
+        <div>
+          <label className="text-sm text-gray-600 font-medium mb-1">Hora</label>
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
+          />
+        </div>
+
+        {/* Sistólica */}
+        <div>
+          <label className="text-sm text-gray-600 font-medium mb-1 flex items-center gap-1">
             <HeartPulse className="w-4 h-4 text-blue-500" />
             Sistólica
           </label>
@@ -52,12 +89,13 @@ export default function RecordForm({ onAdd }) {
             value={systolic}
             onChange={(e) => setSystolic(e.target.value)}
             required
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
           />
         </div>
 
+        {/* Diastólica */}
         <div>
-          <label className="text-sm text-gray-600 font-medium flex items-center gap-1 mb-1">
+          <label className="text-sm text-gray-600 font-medium mb-1 flex items-center gap-1">
             <HeartPulse className="w-4 h-4 text-red-500" />
             Diastólica
           </label>
@@ -66,12 +104,13 @@ export default function RecordForm({ onAdd }) {
             value={diastolic}
             onChange={(e) => setDiastolic(e.target.value)}
             required
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
           />
         </div>
 
+        {/* Pulso */}
         <div>
-          <label className="text-sm text-gray-600 font-medium flex items-center gap-1 mb-1">
+          <label className="text-sm text-gray-600 font-medium mb-1 flex items-center gap-1">
             <ActivitySquare className="w-4 h-4 text-green-600" />
             Pulso (opcional)
           </label>
@@ -79,10 +118,11 @@ export default function RecordForm({ onAdd }) {
             type="number"
             value={pulse}
             onChange={(e) => setPulse(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
           />
         </div>
 
+        {/* Notas */}
         <div>
           <label className="text-sm text-gray-600 font-medium mb-1">
             Notas
@@ -91,14 +131,14 @@ export default function RecordForm({ onAdd }) {
             type="text"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 outline-none transition"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2"
           />
         </div>
       </div>
 
       <button
         type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-medium py-3 rounded-lg transition shadow-md"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg"
       >
         Guardar
       </button>

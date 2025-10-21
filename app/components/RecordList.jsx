@@ -21,10 +21,22 @@ export default function RecordList() {
     fetchRecords();
   }, []);
 
+  // Filtrar por rango de fechas
   const filteredRecords = records.filter((r) => {
-    const date = r.date.split("T")[0];
-    return date >= startDate && date <= endDate;
+    const recordDate = r.date.split("T")[0];
+    return recordDate >= startDate && recordDate <= endDate;
   });
+
+  // Formatear fecha y hora
+  const formatDateTime = (isoString) => {
+    const date = new Date(isoString);
+    const localDate = date.toLocaleDateString("es-CR");
+    const localTime = date.toLocaleTimeString("es-CR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    return `${localDate} ${localTime}`;
+  };
 
   return (
     <div className="bg-white shadow-lg rounded-xl p-4 sm:p-6 md:p-8 border border-gray-100 mt-6 w-full max-w-3xl mx-auto">
@@ -54,7 +66,7 @@ export default function RecordList() {
         endDate={endDate}
       />
 
-      {/* Mobile */}
+      {/* Vista móvil */}
       <div className="sm:hidden flex flex-col gap-3 mt-4">
         {filteredRecords.length === 0 && (
           <p className="text-gray-500 text-center">No hay registros</p>
@@ -64,7 +76,7 @@ export default function RecordList() {
             key={r._id}
             className="bg-gray-50 rounded-xl p-4 shadow-sm border border-gray-200"
           >
-            <p className="text-gray-600 text-sm">{r.date.split("T")[0]}</p>
+            <p className="text-gray-600 text-sm">{formatDateTime(r.date)}</p>
             <div className="flex flex-wrap gap-2 mt-2">
               <span className="font-medium">Sistólica: {r.systolic}</span>
               <span className="font-medium">Diastólica: {r.diastolic}</span>
@@ -75,12 +87,12 @@ export default function RecordList() {
         ))}
       </div>
 
-      {/* Desktop */}
+      {/* Vista escritorio */}
       <div className="hidden sm:block overflow-x-auto mt-4">
         <table className="w-full text-sm text-left border border-gray-200 rounded-lg overflow-hidden">
           <thead className="bg-gray-100 text-gray-700">
             <tr>
-              <th className="px-4 py-2 border-b">Fecha</th>
+              <th className="px-4 py-2 border-b">Fecha y Hora</th>
               <th className="px-4 py-2 border-b">Sistólica</th>
               <th className="px-4 py-2 border-b">Diastólica</th>
               <th className="px-4 py-2 border-b">Pulso</th>
@@ -90,7 +102,7 @@ export default function RecordList() {
           <tbody>
             {filteredRecords.map((r) => (
               <tr key={r._id} className="hover:bg-gray-50 transition border-b">
-                <td className="px-4 py-2">{r.date.split("T")[0]}</td>
+                <td className="px-4 py-2">{formatDateTime(r.date)}</td>
                 <td className="px-4 py-2 font-medium">{r.systolic}</td>
                 <td className="px-4 py-2 font-medium">{r.diastolic}</td>
                 <td className="px-4 py-2">{r.pulse || "-"}</td>
