@@ -45,18 +45,31 @@ export default function ExportButtons({ records, startDate, endDate, user }) {
     window.URL.revokeObjectURL(url);
   };
 
+  const formatDate = (date) => {
+    if (!(date instanceof Date) || isNaN(date)) return null;
+    const d = new Date(date);
+    return d.toISOString().split("T")[0]; // YYYY-MM-DD
+  };
+
   const exportPDF = () => {
     const doc = new jsPDF();
+
+    const start = formatDate(new Date(startDate));
+    const end = formatDate(new Date(endDate));
+
     const filtered = records.filter((r) => {
-      const d = new Date(r.date);
-      return d >= startDate && d <= endDate;
+      const d = formatDate(new Date(r.date));
+      if (!d) return false;
+      if (start && d < start) return false;
+      if (end && d > end) return false;
+      return true;
     });
 
     // Encabezado
     doc.setFontSize(16);
     doc.text("Historial de Presión Arterial", 14, 20);
     doc.setFontSize(11);
-    const fechaRango = `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+    const fechaRango = `${start || "-"} - ${end || "-"}`;
     doc.text(`Rango de fechas: ${fechaRango}`, 14, 28);
     doc.text(`Usuario: ${user?.name || "-"}`, 14, 36);
     doc.text(`Total registros: ${filtered.length}`, 14, 44);
